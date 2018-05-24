@@ -1,0 +1,53 @@
+form.html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>form</title>
+  <script type="text/javascript" src="form.js"></script>
+</head>
+<body>
+  <form action="pass.html" method="post" id="loginForm">
+    登录邮箱:<input type="text" name="email" id="email"><br>
+    <button type="submit" id="subBut">登录</button>
+  </form>
+</body>
+</html>
+----------------------------------------------
+pass.html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>pass</title>
+</head>
+<body>
+  <h1>表单验证通过</h1>
+</body>
+</html>
+-----------------------------------------------
+form.js
+window.onload = function () {//冒泡过程 body <-> form <-> button  提交->拦截->提交 动态绑定拦截不住问题
+    document.getElementById("subBut").addEventListener("submit",function (ev) {
+        console.log(ev);
+        var emailObj = document.getElementById("email");
+        if(emailObj.value() == null) {
+           alert("还没有登录，先登录啊！");
+           if(e && e.preventDefault()) {
+               e.preventDefault();
+           } else {
+               window.event.returnValue =false;
+           }
+           ev.preventDefault();
+        } else {
+            if(/^\w+@\w+\.\w+$/.test(emailObj.value)) {
+                this.submit();
+            } else {
+                alert("请输入合法Email地址!")
+                ev.preventDefault();
+            }
+
+        }
+    },false);
+    alert("hahahah")
+}
