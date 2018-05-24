@@ -1,0 +1,33 @@
+mousedown 按下
+mouseup 弹开
+mouseout 出去
+mouseover 路过
+mousemove 移动，移动触发
+--------------------------------------------------
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>var</title>
+  <script type="text/javascript" src="Test_1.js"></script>
+</head>
+<body>
+  <button id="MyId">PUSH MY QCX</button>
+  <img src="123.jpg" id="MyPic" style="width: 200px;">
+</body>
+</html>
+
+
+window.onload=function () {
+    var obj = document.getElementById("MyId");
+    if(obj != undefined) {
+        obj.addEventListener("click",function () {loadFun()},false);
+    }
+    var mouse = document.getElementById("MyPic");
+    if(mouse != undefined) {
+        mouse.addEventListener("mouseover",function () {alert("秦晨欣在干嘛啊")},false);
+    }
+}
+function loadFun(){
+    alert("页面加载了！");
+}
