@@ -1,9 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>var</title>
+  <script type="text/javascript" src="Test_1.js"></script>
+</head>
+<body>
+  <div id="showPic">
+    <img src="Images/1.jpg" id="myPic" style="width: 300px">
+  </div>
+  <div id="ctrlPic">
+    <button id= "prePage">上一页</button>
+    <button id= "nextPage">下一页</button>
+  </div>
+</body>
+</html>
+
+
+
+var temp = 1;
+function changePage(){
+    var img = document.getElementById("myPic");
+    img.src = "Images/"+temp+".jpg";
+}
 window.onload=function () {
-    var mouse = document.getElementById("MyPic");
-    if(mouse != undefined) {
-        mouse.addEventListener("mouseover",function () {alert("秦晨欣在干嘛啊")},false);
+    document.getElementById("prePage").addEventListener("click",function () {
+        if (temp >1) {
+            temp --;
+        }
+        changePage();
+    },false);
+    document.getElementById("nextPage").addEventListener("click",function () {
+        if (temp <5) {
+            temp ++;
+        }
+        changePage();
+    });
+}
+-------------------------------------------------------------
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>var</title>
+  <script type="text/javascript" src="Test_1.js"></script>
+</head>
+<body>
+  <div id="showPic">
+    <img src="Images/1.jpg" id="myPic" style="width: 300px">
+  </div>
+</body>
+</html>
+
+
+
+
+var temp = 1;
+function changePage(){
+    if (temp < 5) {
+        temp ++;
+    } else {
+        temp =1;
     }
+    var img = document.getElementById("myPic");
+    img.src = "Images/"+temp+".jpg";
+    setTimeout(changePage,2000);
 }
-function loadFun(){
-    alert("页面加载了！");
+window.onload=function () {
+    changePage();
 }
+
+
+
+
+
+
+
+
+
