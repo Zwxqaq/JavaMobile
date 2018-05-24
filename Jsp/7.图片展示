@@ -1,0 +1,9 @@
+window.onload=function () {
+    var mouse = document.getElementById("MyPic");
+    if(mouse != undefined) {
+        mouse.addEventListener("mouseover",function () {alert("秦晨欣在干嘛啊")},false);
+    }
+}
+function loadFun(){
+    alert("页面加载了！");
+}
