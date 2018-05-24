@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>var</title>
+  <script type="text/javascript" src="Test_1.js"></script>
+</head>
+<body onload="loadFun();loadFun1()" onunload="unload()"></body>
+</html>
+
+function loadFun() {
+    alert("正在打开！")
+}
+function loadFun1() {
+    alert("缓存更新！")
+}
+function unload() {
+    alert("正在关闭！")
+}
