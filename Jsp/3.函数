@@ -1,0 +1,18 @@
+function add(x,y) {
+    if(add.arguments.length == 2){
+        return x+y;
+    } else if(add.arguments.length == 1) {
+        return y;
+    } else {
+        return "去死吧！";
+    }
+}
+document.write(add(1))
+
+
+function person(name,sex) {
+    this.toString = function () {
+        return "name= "+name+"  "+"sex= "+sex;
+    }
+}
+document.write(new person("zwx",10).toString());
