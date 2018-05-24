@@ -1,0 +1,143 @@
+空验证、相等验证、正则验证
+util.js
+function validateEmpty(eleId) {
+    var obj = document.getElementById(eleId);
+    var spanObj = document.getElementById(eleId+"Span");
+    if(obj != null) {
+        if(obj.value == ""){
+            obj.className = "failure";
+            spanObj.innerHTML = "<font color='red'>×</font>";
+            return false;
+        }else{
+            obj.className = "success";
+            spanObj.innerHTML = "<font color='green'>√</font>";
+            return true;
+        }
+    }
+    return false;
+}
+function validateRegex(eleId,regex) {
+    if (validateEmpty(eleId)){
+        var  obj = document.getElementById(eleId);
+        var spanObj = document.getElementById(eleId+"Span");
+        if(!regex.test(obj.value)) {
+            setFailureStyle(eleId);
+            return false;
+        }else{
+            setSuccessStyle(eleId);
+            return true;
+        }
+    }
+    return false;
+}
+function validateEmail(eleId) {
+    return validateRegex(eleId,/^\w+@\w+\.\w$/);
+}
+function validateNumber(eleId) {
+    return validateRegex(eleId,/^\d+(\.\d+)?$/);
+}
+function validateRepeat(srcId,distId) {
+    if(validateEmpty(srcId) && validateEmpty(distId)) {
+        var srcObj = document.getElementById(srcId);
+        var distObj = distObj.getElementById(distId);
+        if(srcObj.value != distObj.value ){
+            setFailureStyle(distObj);
+            return false;
+        }else{
+            setSuccessStyle(distObj);
+            return true;
+        }
+    }
+    return false;
+}
+function setSuccessStyle(obj) {
+    obj.className = "success";
+    var spanObj = document.getElementById(obj.id+"Span");
+    if(spanObj != null){
+        spanObj.innerHTML = "<font color='green'>√</font>";
+    }
+
+}
+function setFailureStyle(eleId) {
+    obj.className = "failure";
+    var spanObj = document.getElementById(obj.id+"Span");
+    if(spanObj != null){
+        spanObj.innerHTML = "<font color='red'>×</font>";
+    }
+
+}
+function formStop(e) {
+    if(e & e.preventDefault()) {
+        e.preventDefault();
+    }else{
+        window.event.preventDefault();
+    }
+}
+--------------------------------------------
+form.css
+.success{
+    background: #f5f5f5;
+    font-weight: bold;
+    color: #000000;
+    border: 1px #009900 solid;
+}
+.failure{
+    background: #f5f5f5;
+    font-weight: bold;
+    color:#000000;
+    border: 1px #990000 solid;
+}
+.init{
+    background: #f5f5f5;
+    font-weight: bold;
+    color: #000000;
+}
+-------------------------------------
+vform.html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>form</title>
+  <link rel="stylesheet" type="text/css" href="form.css">
+  <script type="text/javascript" src="util.js"></script>
+  <script type="text/javascript" src="vform.js"></script>
+</head>
+<body>
+<form action="pass.html" method="post" id="loginForm">
+    用户名:<input type="text" name="uid" id="uid" class="init"><span id="uidSpan"></span><br>
+    密&nbsp;&nbsp;&nbsp;码:<input type="text" name="password" id="password" class="init"><span id="passwordSpan"></span><br>
+    确认密码:<input type="text" name="conf" id="conf" class="init"><span id="confSpan"></span><br>
+    <button type="submit" id="subBut">登录</button>
+    <button type="reset" id="restBut">重置</button>
+</form>
+</body>
+</html>
+----------------------------------------
+window.onload = function ( ) {  
+    document.getElementById("uid").addEventListener("blur",function () {
+        validateUid();
+    },false);
+    document.getElementById("password").addEventListener("blur",function () {
+        validatePassword();
+    },false);
+    document.getElementById("conf").addEventListener("blur",function () {
+        validateConf();
+    },false);
+    document.getElementById("loginForm").addEventListener("submit",function (ev) {
+        if(validateUid() && validatePassword()){
+            this.submit();
+        }else{
+            formStop(ev);
+        }
+    },false);
+}
+function  validateUid() {
+    return validateRegex("uid",/^\w+@\w+\.\w+$/);
+}
+function validatePassword() {
+    return validateRegex("password");
+}
+function validateConf() {
+    return validateRepeat("password","conf");
+}
