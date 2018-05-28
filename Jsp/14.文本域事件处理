@@ -1,0 +1,49 @@
+new.html
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+    "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <script type="text/javascript">
+      window.load = function () {
+          alert("hello");
+          document.getElementById("msg").addEventListener("keypress",
+              function () {
+                  cal();
+              },false);
+          document.getElementById("msg").addEventListener("keydown",
+              function () {
+                  cal();
+              },false);
+          document.getElementById("msg").addEventListener("keyup",
+              function () {
+                  cal();
+              },false);
+      }
+      function cal() {
+          var obj = document.getElementById("msg");
+          var span = document.getElementById("noteSpan");
+          var max = 20;
+          var cur = obj.value.length;
+          if (cur < max) {
+              span.innerHTML = "还允许输入"+(max-cur)+"个字";
+          } else {
+              span.innerHTML = "输入文字过多<font color='red'>"+(max-cur)+"</font>";
+              document.getElementById("subBut").disabled = true;
+          }
+      }
+
+  </script>
+</head>
+<body>
+<form action="">
+  <div>请输入你对xx的评价：
+    <textarea id="msg" cols="30" rows="10"></textarea></div>
+  <div><span id="noteSpan">还允许输入20个字</span></div>
+  <div>
+    <input type="submit" id="subBut" value="提交">
+  </div>
+</form>
+</body>
+</html>
