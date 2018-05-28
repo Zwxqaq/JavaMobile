@@ -1,0 +1,29 @@
+other.html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>javascript</title>
+  <script type="text/javascript">
+      window.load = function () {
+        document.getElementById("city").addEventListener("change",
+            function () {
+            alert("当前选项:"+this.value);
+            },false);
+    }
+  </script>
+</head>
+<body>
+<form action="">
+  你来自哪里：<br>
+  <select id="city">
+    <option value="北京">北京</option>
+    <option value="南京">南京</option>
+    <option value="东京">东京</option>
+    <option value="天京">天京</option>
+    <option value="地京">地京</option>
+  </select>
+  <input type="button" id="showBut" value="选择">
+</form>
+</body>
+</html>
