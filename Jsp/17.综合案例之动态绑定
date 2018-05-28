@@ -1,0 +1,208 @@
+form.css
+.success{
+    background: #f5f5f5;
+    font-weight: bold;
+    color: #000000;
+    border: 1px #009900 solid;
+}
+.failure{
+    background: #f5f5f5;
+    font-weight: bold;
+    color:#000000;
+    border: 1px #990000 solid;
+}
+.init{
+    background: #f5f5f5;
+    font-weight: bold;
+    color: #000000;
+}
+-----------------------------------------
+emp_add.html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>form inst</title>
+  <link rel="stylesheet" type="text/css" href="form.css">
+  <script type="text/javascript" src="util.js"></script>
+  <script type="text/javascript" src="emp_add.js"></script>
+</head>
+<body>
+<form id="empForm">
+  <table cellpadding="5" cellspacing="0" border="1" bgcolor="#F2F2F2">
+    <tr>
+      <td colspan="3">增加雇员信息</td>
+    </tr>
+    <tr id="empTr">
+    <td width="10%">雇员编号：</td>
+    <td width="60%"><input type="text" name="empno" id="empno" class="init"></td>
+    <td width="30%"><span id="empnoSpan"></span> </td>
+    </tr>
+    <tr id="empTr">
+      <td>雇员姓名：</td>
+      <td><input type="text" name="hireName" id="hireName" class="init"></td>
+      <td><span id="hireNameSpan"></span> </td>
+    </tr>
+    <tr id="empTr">
+      <td>雇员职位：</td>
+      <td><input type="text" name="empJob" id="empJob" class="init"></td>
+      <td><span id="empJobSpan"></span> </td>
+    </tr>
+    <tr id="empTr">
+    <td>雇员日期：</td>
+    <td><input type="text" name="hireDate" id="hireDate" class="init"></td>
+    <td><span id="hireDateSpan"></span> </td>
+    </tr>
+    <tr id="empTr">
+    <td>基本工资：</td>
+    <td><input type="text" name="sal" id="sal" class="init"></td>
+    <td><span id="salSpan"></span> </td>
+    </tr>
+    <tr id="empTr">
+    <td>雇佣佣金：</td>
+    <td><input type="text" name="comm" id="comm" class="init"></td>
+    <td><span id="commSpan"></span> </td>
+    </tr>
+    <tr id="empTr">
+    <td colspan="3">
+      <input type="submit" value="提交">
+      <input type="reset" value="重置">
+    </td>
+    </tr>
+  </table>
+</form>
+</body>
+</html>
+-----------------------------------------
+util.js
+function changeColor(obj,color) {
+    obj.bgColor = color;
+}
+function ele(eleId) {
+    return document.getElementById(eleId);
+}
+function eleAll(eleId) {
+    return document.all(eleId);
+}
+function bind(eventType,obj,fun) {
+    obj.addEventListener(eventType,fun,false);
+}
+function validateEmpty(eleId) {
+    var obj = ele(eleId);
+    if (obj != null) {
+        if (obj.value == "") {
+            setFailure(obj);
+            return false;
+        } else {
+            setSuccess(obj);
+            return true;
+        }
+    }
+    return false;
+}
+function setSuccess(obj) {
+    if (obj != null) {
+        obj.className = "success";
+        var spanObj = ele(obj.id + "Span");
+        if (spanObj != null) {
+            spanObj.innerHTML = "<font color='green'>√</font>";
+        }
+    }
+}
+function setFailure(obj) {
+    if (obj != null) {
+        obj.className = "Failure";
+        var spanObj = ele(obj.id + "Span");
+        if (spanObj != null) {
+            spanObj.innerHTML = "<font color='red'>×</font>";
+        }
+    }
+}
+function validateRegex(eleId,regex) {
+    var obj = ele(eleId);
+    console.log(obj);
+    if (validateEmpty(eleId)) {
+        if (!regex.test(obj.value)) {
+            setFailure(obj);
+            return false;
+        } else {
+            setSuccess(obj);
+            return true;
+        }
+    }
+}
+function validateNumber(eleId) {
+    return validateRegex(eleId,/^\d+(\.\d{1,2})?$/);
+}
+function validateDate(eleId) {
+    return validateRegex(eleId,/^\d{4}-\d{2}-\d{2}?$/)
+}
+-----------------------------------------
+emp_add.js
+window.onload = function (ev) {
+    var trObj = eleAll("empTr");
+    for (var x = 0; x < trObj.length ; x ++) {
+        bind("mouseover",trObj[x],function () {
+            changeColor(this,'#FFFFFF');
+        });
+        bind("mouseout",trObj[x],function () {
+            changeColor(this,'#F2F2F2');
+        });
+    }
+    bind("blur",ele("empno"),function () {
+        validateEmpno();
+    });
+    bind("blur",ele("hireName"),function () {
+        validateEmpName();
+    });
+    bind("blur",ele("empJob"),function () {
+        validatEmpJob();
+    });
+    bind("blur",ele("hireDate"),function () {
+        validateEmpDate();
+    });
+    bind("blur",ele("sal"),function () {
+        validateEmpSal();
+    });
+    bind("blur",ele("comm"),function () {
+        validateEmpComm();
+    });
+    bind("submit",ele("empForm"),function (e) {
+        if (validateForm()) {
+            this.submit();
+        } else {
+            if (e && e.preventDefault()) {
+                e.preventDefault();
+            } else {
+                window.event.returnValue = false;
+            }
+        }
+
+    })
+}
+// function validateEmpno() {
+//     return validateEmpty("empno");
+// }
+function validateEmpno() {
+    return validateRegex("empno",/^\d{4}$/);
+}
+function validateEmpName() {
+    return validateEmpty("hireName");
+}
+function validatEmpJob() {
+    return validateEmpty("empJob");
+}
+function validateEmpDate() {
+    return validateDate("hireDate");
+}
+function validateEmpSal() {
+    return validateNumber("sal");
+}
+function validateEmpComm() {
+    return validateNumber("comm");
+}
+function validateForm() {
+    return (validateEmpno() && validateEmpName() &&
+    validatEmpJob() && validateEmpDate() &&
+    validateEmpSal() && validateEmpComm())
+}
