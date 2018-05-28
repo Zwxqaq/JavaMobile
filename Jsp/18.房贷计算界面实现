@@ -1,0 +1,215 @@
+house.html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>house calc</title>
+  <link rel="stylesheet" type="text/css" href="form.css">
+  <script type="text/javascript" src="util.js"></script>
+  <script type="text/javascript" src="house.js"></script>
+</head>
+<body>
+<div id="inputDiv">
+  <form>
+    <table border="1" width="100%">
+      <tr>
+        <td colspan="3">房贷计算器</td>
+      </tr>
+      <tr>
+        <td width="20%">出售单价:</td>
+        <td width="50%"><input type="text" name="unitPrice" id="unitPrice" class="init" value="70000.00"></td>
+        <td width="30%"><span id="unitPriceSpan">请输入房屋出售单价/平米</span></td>
+      </tr>
+      <tr>
+        <td>出租单价(m<sup>2</sup>):</td>
+        <td><input type="text" name="rentPrice" id="rentPrice" class="init" value="382.50"></td>
+        <td><span id="rentPriceSpan">请输入房屋出租单价/平米</span></td>
+      </tr>
+      <tr>
+        <td>物业费(m<sup>2</sup>):</td>
+        <td><input type="text" name="proPrice" id="proPrice" class="init" value="50.50"></td>
+        <td><span id="proPriceSpan">请输入房屋物业费单价/平米</span></td>
+      </tr>
+      <tr>
+        <td>房屋面积(m<sup>2</sup>):</td>
+        <td><input type="text" name="area" id="area" class="init" value="200"></td>
+        <td><span id="areaSpan">请输入房屋面积单价/平米</span></td>
+      </tr>
+      <tr>
+        <td>首付比例:</td>
+        <td><select id="pay" name="pay">
+          <option value="10">10%</option>
+          <option value="20">20%</option>
+          <option value="30">30%</option>
+          <option value="40" selected>40%</option>
+          <option value="50">50%</option>
+        </select></td>
+        <td><span id="paySpan">请选择首付比例</span></td>
+      </tr>
+      <tr>
+        <td>贷款利息:</td>
+        <td><input type="text" name="cost" id="cost" class="init" value="0.04"></td>
+        <td><span id="costSpan">请输入贷款利率</span></td>
+      </tr>
+    </table>
+  </form>
+</div>
+<div id="butDiv">
+  <input type="button" value="计算" id="calBut">
+  <input type="button" value="重置" id="resetBut">
+</div>
+<div id="calDiv">
+  <div>首付金额：<span id="firstResult"></span> </div>
+  <div>贷款总额：<span id="allResult"></span></div>
+  <div>每月支付利息：<span id="costResult"></span> </div>
+  <div>每月租金:<span id="rentResult"></span> </div>
+  <div>每月物业费:<span id="proResult"></span> </div>
+</div>
+</body>
+</html>
+-------------------------------------------------------------
+util.js
+function validateEmpty(eleId) {
+    var obj = ele(eleId);
+    if (obj != null) {
+        if (obj.value == ""){
+            setFailure(obj);
+            return false;
+        } else {
+            setSuccess(obj);
+            return true;
+        }
+    }
+    return false;
+}
+function ele(eleId) {
+  return document.getElementById(eleId);
+}
+
+/**
+ * 使用正则进行数据的验证
+ * @param eleId 组件元素的ID
+ * @param regex 正则验证规则
+ */
+function validateRegex(eleId,regex) {
+    if (validateEmpty(eleId)) {
+        if (!regex.test(ele(eleId).value)) {
+            setFailure(ele(eleId));
+            return false;
+        } else {
+            setSuccess(ele(eleId));
+            return true;
+        }
+    }
+    return false;
+}
+
+/**
+ * 验证数字
+ * @param eleId 组件元素ID
+ * @returns {boolean}
+ */
+function validateNumber(eleId) {
+    return validateRegex(eleId,/^\d+(\.\d+)?$/);
+}
+/**
+ * 设置错误显示的信息
+ * @param text 显示样式的文本信息
+ * @param obj 错误样式设置的元素
+ * @param className 样式名称
+ */
+function setChangeStyle(obj,className,text) {
+    var objSpan = ele(obj.id+"Span");
+    obj.className = className;
+    if (objSpan != null) {
+        objSpan.innerHTML = text;
+    }
+}
+function setSuccess(obj) {
+    setChangeStyle(obj,"success","<font color='green'>√</font>");
+}
+function setFailure(obj) {
+    setChangeStyle(obj,"failure","<font color='red'>×</font>");
+}
+function bind(obj,eventType,fun) {
+    obj.addEventListener(eventType,fun,false);
+}
+function round(num,scale) {
+    return Math.round(Math.pow(num,scale));
+}
+-------------------------------------------------------------------
+house.js
+window.onload = function () {
+    bind(ele("unitPrice"),"blur",function () {
+        validateUnitPrice();
+    },false);
+    bind(ele("rentPrice"),"blur",function () {
+        validateRentPrice();
+    },false);
+    bind(ele("proPrice"),"blur",function () {
+        validateProPrice();
+    },false);
+    bind(ele("area"),"blur",function () {
+        validateArea();
+    },false);
+    bind(ele("cost"),"blur",function () {
+        validateCost();
+    },false);
+    bind(ele("calBut"),"click",function () {
+        if (validateForm()) {
+            var unitPrice = parseFloat(ele("unitPrice").value);
+            var rentPrice = parseFloat(ele("rentPrice").value);
+            var proPrice  = parseFloat(ele("proPrice").value);
+            var area      = parseFloat(ele("area").value);
+            var cost      = parseFloat(ele("cost").value);
+            var pay       = parseFloat(ele("pay").value)/100;
+            ele("firstResult").innerHTML = round(unitPrice * area * pay,2) ;
+            var allResult = round(unitPrice * area * (1-pay),2);
+            ele("allResult").innerHTML   = allResult;
+            ele("costResult").innerHTML  = allResult * cost/12;
+            ele("rentResult").innerHTML  = rentPrice * area;
+            ele("proResult").innerHTML   = area * proPrice;
+        }
+    },false);
+    bind(ele("resetBut"),"click",function () {
+            resetForm();
+    },false);
+}
+
+function resetForm() {
+    ele("unitPrice").value = "" ;
+    ele("rentPrice").value = "" ;
+    ele("proPrice").value  = "" ;
+    ele("area").value      = "" ;
+    ele("cost").value      = "" ;
+    ele("unitPrice").className = "init" ;
+    ele("rentPrice").className = "init" ;
+    ele("proPrice").className  = "init" ;
+    ele("area").className      = "init" ;
+    ele("cost").className      = "init" ;
+    ele("unitPriceSpan").innerHTML = "请输入房屋出售单价/平米" ;
+    ele("rentPriceSpan").innerHTML = "请输入房屋出租单价/平米" ;
+    ele("proPriceSpan").innerHTML  = "请输入房屋物业费单价/平米" ;
+    ele("areaSpan").innerHTML      = "请输入房屋面积单价/平米" ;
+    ele("costSpan").innerHTML      = "请输入贷款利率" ;
+
+}
+function validateUnitPrice() {
+    return validateNumber("unitPrice");
+}
+function validateRentPrice() {
+    return validateNumber("rentPrice");
+}
+function validateProPrice() {
+    return validateNumber("proPrice");
+}
+function validateArea() {
+    return validateNumber("area");
+}
+function validateCost() {
+    return validateNumber("cost");
+}
+function validateForm() {
+    return (validateUnitPrice() && validateRentPrice() &&
+    validateProPrice() && validateArea() && validateCost());
+}
