@@ -1,0 +1,47 @@
+other.html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>javascript</title>
+  <script type="text/javascript">
+    window.load = function () {
+        document.getElementById("showBut").addEventListener("click",function () {
+            var instObj = document.all("inst");
+            var value = "interest:";
+            if (instObj == undefined) {
+                value = instObj.value;
+            } else {
+                for (var x=0;x<instObj.length;x++) {
+                    if(instObj[x].checked) {
+                        value += instObj[x].value;
+                    }
+                }
+            }
+            alert(value);//alert出不来
+        },false);
+        document.getElementById("choiceBox").addEventListener("click",function () {
+            var instObj = document.all("inst");
+            if (instObj.length == undefined) {
+                instObj.checked =this.checked;
+            } else {
+                for (var x=0;x<instObj.length;x++) {
+                    instObj[x].checked = this.checked;
+                }
+            }
+        },false);
+    }
+  </script>
+</head>
+<body>
+<form action="">
+  <input type="checkbox" id="choiceBox" name="choiceBox">xxx的爱好：<br>
+    <input type="checkbox" id="inst" name="inst" value="sb">sb<br>
+    <input type="checkbox" id="inst" name="inst" value="fuck">fuck<br>
+    <input type="checkbox" id="inst" name="inst" value="db">db<br>
+    <input type="checkbox" id="inst" name="inst" value="nb">nb<br>
+    <input type="checkbox" id="inst" name="inst" value="zz">zz<br>
+  <input type="button" id="showBut" value="选择">
+</form>
+</body>
+</html>
