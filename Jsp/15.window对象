@@ -1,0 +1,55 @@
+new.html 不断显示window内容
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+    "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>window object</title>
+  <script type="text/javascript">
+    window.alert("dfuck");
+    var name= window.prompt(("请输入姓名","你的姓名");
+    document.write("<h1>"+name+"</h1>");
+  </script>
+</head>
+<body>
+
+</body>
+</html>
+-----------------------------------------------------------------------------------
+new.html  弹窗
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+    "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>window object</title>
+  <script type="text/javascript">
+    window.open("pass.html"); 
+  </script>
+</head>
+<body>
+</body>
+</html>
+---------------------------------------------------------------------------------------
+new.html 确认框
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+    "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>window object</title>
+  <script type="text/javascript">
+    window.onload = function (ev) {
+        document.getElementById("delBut").addEventListener("click",
+        function (ev1) {
+            if(window.confirm("确定要删除吗?")) {
+                window.location = "other.html";
+            }
+        },false);
+    }
+  </script>
+</head>
+<body>
+<input type="button" id="delBut" value="删除邮件">
+</body>
+</html>
