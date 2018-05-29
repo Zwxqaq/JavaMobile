@@ -1,0 +1,14 @@
+###将WEBAPPS/ROOT web-inf文件夹复制到需要的Web文件中
+###然后修改conf中的server.xml <Context path="/zwx" docBase="L:\myweb" /> 
+   修改conf中web.xml  <param-name>listings</param-name> 
+                  <param-value>true</param-value> 
+###idea配置中采用Tomcat web容器，在Modules中增加jdk和Tomcat版本，在Facets中增加所需文件中的WEB-INF/web.xml,并在Artifacts中添加所需的文件，
+包括jsp、html等代码，以及在Modules中添加的jdk与Tomcat，在WEB-INF的lib中，配置好后可在Artifacts中可以看到WEB-INF下有两个文件夹，分别为classes以及
+lib文件夹。                  
+###JSP执行流程，GET Tomcat文件，xxx.jsp -->xxx.java转换执行  当下一次需要打开xxx.jsp其实已经变成了-->xxx.class执行打开就不需要编译过程直接执行即可。
+因而整体的流程其实还是编译执行的过程。
+###Tomcat内存调优策略：与JVM内存调优策略相同，最大内存=可用空间内存即可。
+Tomcat 8.x直接修改文件bin\catalina.bat文件追加JAVA_OPTS即可
+      eg： JAVA_OPTS="-Xmx40g -Xms40g"
+Tomcat 9.x只需要注册一个环境变量属性即可   
+      eg： CATALINA_OPTS  值为 -Xmx40g -Xms40g
