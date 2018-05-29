@@ -1,0 +1,229 @@
+jsp中page指令是唯一一个描述jsp页面属性的指令，
+    这个属性包括：文件编码、MIME响应类型、导入处理包、页面的缓冲配置、session配置等
+1.页面编码：
+    pagedemo.jsp
+    为了保证页面中文字正常显示，进行页面编码设置，设置pageEncoding的显式信息，常用编码：UTF-8
+    <%@ page pageEncoding="UTF-8" contentType="text/html;charset=UTF-8" language="java" %>
+    <html>
+      <head>
+        <title>你好啊</title>
+      </head>
+      <body>
+        <h1>啊！我美丽的世界~</h1>
+      </body>
+    </html>
+2.MIME设置：一个页面最终显示形式
+    Tomcat/conf/web.xml中定义有这样的显示样式，htm、html处理模式是相同的
+    定义自己的MIME风格：如果未设置，即为text/html
+    <%@ page pageEncoding="UTF-8" contentType="application/xml;charset=UTF-8" language="java" %>
+    <%@ page pageEncoding="UTF-8" contentType="application/msword;charset=UTF-8" language="java" %>
+    <%@ page pageEncoding="UTF-8" contentType="text/html;charset=UTF-8" language="java" %>
+3..import指令  
+    page指令中最为重要的功能：开发包导入操作（该开发包必须在CLASSPATH中）。
+    使用import指令进行系统包的导入处理。
+    import指令是系统中唯一一个可以重复编写的page中的指令。
+    <%@ page import="java.util.*,java.text.*" %>
+    <%@ page import="java.sql.*"%>
+    <h1><%=new java.util.Date()%></h1>
+    <h1><%=new SimpleDateFormat("yyyy-MM-dd").format(new java.util.Date())%></h1>
+4.连接Oracle数据库   ---->数据库处理还有点问题
+    导入sql包，从而进行数据库开发处理。
+    将相关*.jar抓到位置文件的lib目录下。
+    <%@ page pageEncoding="UTF-8" contentType="text/html;charset=UTF-8" language="java" %>
+  <%@ page import="java.sql.*"%>
+  <html>
+    <head>
+      <title>你好啊</title>
+    </head>
+    <body>
+      <%!
+        public static final String DRIVER = "Oracle.jdbc.driver.OracleDriver";
+        public static final String URL ="jdbc:oracle:thin:@localhost:1521:root";
+        public static final String USER = "scott";
+        public static final String PASSWORD = "tiger";
+      %>
+      <%
+        Connection conn = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+      %>
+      <%
+        Class.forName(DRIVER);
+        conn = DriverManager.getConnection(URL,USER,PASSWORD);
+        String sql = "SELECT empno,ename,job,hiredate,sal,comm FROM emp";
+        preparedStatement = conn.prepareStatement(sql);
+        resultSet = preparedStatement.executeQuery();
+      %>
+      <table style="width: 100%" border="0" cellpadding="1" cellspacing="1" bgcolor="#F5F5F5">
+        <thead>
+          <tr bgcolor="#000000">
+            <td>雇员编号</td>
+            <td>姓名</td>
+            <td>职位</td>
+            <td>雇佣日期</td>
+            <td>基本工资</td>
+            <td>佣金</td>
+          </tr>
+        </thead>
+        <tbody>
+          <%
+            while (resultSet.next()) {
+              int empno = resultSet.getInt(1);
+              String ename = resultSet.getString(2);
+              String job = resultSet.getString(3);
+              Date hiredate = resultSet.getDate(4);
+              double sal = resultSet.getDouble(5);
+              double comm = resultSet.getDouble(6);
+          %>
+          <tr bgcolor="#FFFFFF">
+            <td><%=empno%></td>
+            <td><%=ename%></td>
+            <td><%=job%></td>
+            <td><%=hiredate%></td>
+            <td><%=sal%></td>
+            <td><%=comm%></td>
+          </tr>
+          <%
+          }
+          %>
+        </tbody>
+      </table>
+      <%
+        conn.close();
+      %>
+    </body>
+  </html>
+5.include指令
+    头部信息
+  工        
+  具      内
+  栏      容
+    尾部信息
+  为了防止代码的重复，将这些逻辑代码放在一个文件之中，而后在有需要的情况下进行导入。
+  JSP对此类方式提供两种语法：
+      1.静态包含处理    <%@include file="路径"%>
+      建立3个文件夹 info.html  info.jsp  info.inc
+      然后建立include_demo.jsp
+      <%@ page pageEncoding="UTF-8" contentType="text/html;charset=UTF-8" language="java" %>
+      <html>
+      <head>
+          <title>Title</title>
+      </head>
+      <body>
+          <h1>***********************</h1>
+          <%@ include file="info.html"%>
+          <%@ include file="info.jsp"%>
+          <%@ include file="info.inc"%>
+      </body>
+      </html>
+      2.动态包含处理    
+      不传递参数进行包含  <jsp:include page="路径"/>  -->保证完结
+      向包含页面传递参数  <jsp:include page="info.html">
+                           <jsp:param name="参数名称" value="参数内容"/>
+                        </jsp:include>
+                        且这些传递参数在被包含页面统一使用request.getParameter()方法进行接收处理
+      与静态包含区别：会区分被包含的页面为动态页还是静态页
+          动态页：先处理后包含进行操作
+          静态页：静态包含处理方式相同
+      不传递参数包含：
+          <jsp:include page="info.html"/>
+          <jsp:include page="info.jsp"/>
+          <jsp:include page="info.inc"/>
+      包含页面传递参数:接收的参数直接采用了一个固定的内容的传输,如果需要传输的是你定义的变量,需要表达式输出
+        且标签指令不允许出现在scriptlet中
+        param.jsp
+        <%@ page pageEncoding="UTF-8" contentType="text/html;charset=UTF-8" language="java" %>
+        <html>
+        <head>
+            <title>Title</title>
+        </head>
+        <body>
+        <h1>参数A：<%=request.getParameter("paramA")%></h1>
+        <h1>参数B：<%=request.getParameter("paramB")%></h1>
+        <h1>参数C: <%=request.getParameter("paramC")%></h1>
+        </body>
+        </html>
+        1.固定内容
+          <body>
+              <h1>***********************</h1>
+              <jsp:include page="param.jsp">
+                  <jsp:param name="paramA" value="hello"/>
+                  <jsp:param name="paramB" value="world"/>
+              </jsp:include>
+          </body>
+          </html>
+         2.表达式输出
+         <%@ page pageEncoding="UTF-8" contentType="text/html;charset=UTF-8" language="java" %>
+         <html>
+         <head>
+             <title>Title</title>
+         </head>
+         <body>
+             <%String info ="fucker";%>
+             <h1>***********************</h1>
+             <jsp:include page="param.jsp">
+                 <jsp:param name="paramA" value="hello"/>
+                 <jsp:param name="paramB" value="world"/>
+                 <jsp:param name="paramC" value="<%=info%>"/>
+             </jsp:include>
+         </body>
+         </html>
+         3.两种包含的区别
+         静态包含操作是先将被包含页面源代码包含进来，而后再一起进行解析执行，所以自然产生了重复的num变量
+         动态包含操作是先分别各自进行源代码解析处理，最后将处理后的结果包含在一起显示，先处理后包含
+         不确定是否存在重名变量，以后尽量使用动态包含
+         <%@ include file="path">
+         <jsp.include page="path"/>
+         number.jsp
+         <%@ page pageEncoding="UTF-8" contentType="text/html;charset=UTF-8" language="java" %>
+         <html>
+         <head>
+             <title>Title</title>
+         </head>
+         <body>
+             <%int num = 100;%>
+             <h1>number.jsp页面输出,num =<%=num%></h1>
+         </body>
+         </html>
+         -------------------------------------------------------
+         include_demo.jsp    静态包含时会发现页面出错
+         <%@ page pageEncoding="UTF-8" contentType="text/html;charset=UTF-8" language="java" %>
+         <html>
+         <head>
+             <title>Title</title>
+         </head>
+         <body>
+             <%int num = 10;%>
+             <%@include file="number.jsp"%>
+             <h1>include_demo.jsp页面,num = <%=num%></h1>
+         </body>
+         </html>
+         ---------------------------------------------------------------
+         include_demo.jsp  动态包含
+         <%@ page pageEncoding="UTF-8" contentType="text/html;charset=UTF-8" language="java" %>
+         <html>
+         <head>
+             <title>Title</title>
+         </head>
+         <body>
+             <%int num = 10;%>
+             <jsp:include page="number.jsp"/>
+             <h1>include_demo.jsp页面,num = <%=num%></h1>
+         </body>
+         </html>
+         显示如下：
+         number.jsp页面输出,num =100
+         include_demo.jsp页面,num = 10
+         
+         
+    
+         
+         
+         
+          
+          
+                              
+      
+      
+      
+      
