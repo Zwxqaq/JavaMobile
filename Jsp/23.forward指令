@@ -1,0 +1,52 @@
+forward无条件跳转指令，重定向
+  跳转时不传递参数
+      <jsp:forward page="跳转路径"/>
+  跳转时传递参数
+      <jsp:forward page="跳转路径">
+          <jsp:param name="参数名称" value="参数内容">
+          <jsp:param name="参数名称" value="参数内容">
+          ...
+      </jsp:forward>
+  ----------------------------------------
+  forward.jsp
+  <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+  <html>
+  <head>
+      <title>Title</title>
+  </head>
+  <body>
+      <jsp:forward page="param.jsp">
+          <jsp:param name="paramA" value="hello"/>
+          <jsp:param name="paramB" value="world"/>
+          <jsp:param name="paramC" value=",Fucker"/>
+      </jsp:forward>
+  </body>
+  </html>
+  ---------------------------------------------
+  param.jsp
+  <%@ page pageEncoding="UTF-8" contentType="text/html;charset=UTF-8" language="java" %>
+  <html>
+  <head>
+      <title>Title</title>
+  </head>
+  <body>
+  <h1>参数A：<%=request.getParameter("paramA")%></h1>
+  <h1>参数B：<%=request.getParameter("paramB")%></h1>
+  <h1>参数C: <%=request.getParameter("paramC")%></h1>
+  </body>
+  </html>
+  -----------------------------------------------
+  执行后发现，路径依旧是请求的路径，内容实际上已经变为跳转的内容，这种开发成为服务器端跳转
+  info.jsp
+  <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+  <html>
+  <head>
+      <title>Title</title>
+  </head>
+  <body>
+      <h1>info.jsp</h1>
+      <a href="param.jsp">param</a>
+  </body>
+  </html>
+  info.jsp中的跳转为客户端跳转，请求路径依旧发生了改变
+跳转指令属于标签指令，操作的最后一定要完结标签。同时跳转属于服务器端跳转操作。
