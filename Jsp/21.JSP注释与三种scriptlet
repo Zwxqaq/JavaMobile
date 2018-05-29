@@ -1,0 +1,44 @@
+Jsp注释：
+    1.显式注释 <!-- -->
+    2.隐式注释  java风格  // /**/
+               jsp风格  <%-- --%> 
+第一种Scriptlet
+    applet  应用小程序
+    servlet 服务器端小程序
+    scriptlet 脚本小程序 写在jsp文件中，主要编写Java程序使用，有效与HTML代码进行分离
+        三种scriptlet：1.<%%>定义局部变量，编写程序语句，相当于一个类中的普通方法
+                          <%int count = 0;int sum = 0;out.println(count ++);%>
+                          <%out.println(sum ++);%>
+                      2.<%!%>定义全局变量，方法，类  在此用的最多的就是全局常量信息
+                          <%!int count = 0;int sum = 0;public static String str = "fuck"; %>
+                          <%out.println(sum ++);out.println(count ++);out.println(str);%>
+                      3.<%=%>表达式输出使用，可以直接输出内容，有效将html代码与JSP中变量输出进行分割，禁止使用out.println()
+                      注意问题：
+                            1.与JavaScript混用的时候
+                           <%!int count = 0;int sum = 0;
+                            public static String str = "fuck";%>
+                            <h1><%=str%></h1>
+                            <h2><%=count++%></h2>
+                            <script type="text/javascript">
+                              alert("<%=str%>");
+                            </script>
+                            记得js和java使用是都得加上"..."以防混乱两个程序语言
+                            2.jsp乘法口诀表
+                            <table border="1">
+                            <%
+                              for (int x=1;x<=9;x++) {
+                            %>
+                              <tr>
+                                <%
+                                  for (int y=1;y<=x;y++) {
+                                %>
+                                  <td><%=x%> * <%=y%> = <%=x*y%></td>
+                                <%
+                                  }
+                                %>
+                              </tr>
+                            <%
+                              }
+                            %>
+                          </table>
+                                                    
