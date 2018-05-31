@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" >
+  <title>Title</title>
+  <base href="http://www.w3school.com.cn/i/"/>
+  <base target="_blank">
+  <style type="text/css">
+    h1 {color: red}
+    h2 {color: blue}
+    h3 {color: pink}
+    p  {color: grey}
+    hr {color: blue}
+  </style>
+</head>
+<body>
+  <img src="qaq.jpg"><br>
+  <a href="http://www.baidu.com">baidu</a>
+  <h1>h1h1h1h1hh1h</h1><hr>
+  <h2>h2h2h2h2h2h2h</h2>
+  <h3>heifiefhei</h3><hr>
+  <p>fuck</p>
+  <font size="3" color="#808080">爱我中华</font>
+  <font size="10" color="#808080">爱你妹中华</font>
+  <font face="verdana" color="#808080">&quot;EU&quot;&amp;NA</font>
+  <font size="10" color="#808080">白茶&reg;</font>
+  <font size="3" color="#808080">版权所有&copy;</font>
+  <font size="10" color="#808080">一树春&trade;</font>
+  <font size="10" color="#808080">白茶&ensp;</font>
+  <font size="10" color="#808080">白茶&emsp;</font>
+  <font size="10" color="#808080">白茶&nbsp;绿茶&nbsp;红茶&nbsp;</font>
+  <ul>
+    <li>1.Apple</li>
+    <li>2.Iphone</li>
+    <li>3.Star</li>
+  </ul>
+  <!--cellpadding内容与边框边距  cellspacing单元格边距-->
+  <table width="800" border="2" cellpadding="10" cellspacing="1">
+    <thead>
+      <tr>
+        <th>班级</th>
+        <th>姓名</th>
+        <th>年龄</th>
+        <th>备注</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <th>cs1</th>
+        <th>zwx</th>
+        <th>15</th>
+        <!--rowspan合并行 colspan合并列 -->
+        <th rowspan="2">骚猪(-.-)</th>
+      </tr>
+      <tr>
+        <th>cs2</th>
+        <th>zwz</th>
+        <th>20</th>
+      </tr>
+      <tr>
+        <th>cs3</th>
+        <th>qaq</th>
+        <th colspan="2" rowspan="2">20</th>
+      </tr>
+      <tr>
+        <th>cs4</th>
+        <th>qcx</th>
+      </tr>
+    </tbody>
+  </table>
+  <form>
+    <table width="500">
+      <tr>
+        <th>用户</th>
+        <th><input type="text" name="user" value="默认输入"></th>
+      </tr>
+      <tr>
+        <th>密码</th>
+        <th><input type="password" name="pass"></th>
+      </tr>
+      <tr>
+        <th><input type="checkbox">记住密码</th>
+      </tr>
+      <tr>
+        <th><input type="submit" value="登录"></th>
+      </tr>
+    </table>
+  </form>
+  <form>
+    <table width="500">
+      <tr>
+        <th>用户</th>
+        <th><input type="text"></th>
+      </tr>
+      <tr>
+        <th>密码</th>
+        <th><input type="text"></th>
+      </tr>
+      <tr>
+        <th>确认密码</th>
+        <th><input type="text"></th>
+      </tr>
+      <tr>
+        <th>性别</th>
+        <th><input type="radio">男&nbsp;<input type="radio" checked>女</th>
+      </tr>
+      <tr>
+        <th>个人爱好</th>
+        <th><input type="checkbox" checked>体育&nbsp;<input type="checkbox">音乐&nbsp;<input type="checkbox">书籍</th>
+      </tr>
+      <tr>
+        <th>邮件</th>
+        <th><input type="text"></th>
+      </tr>
+      <tr>
+        <th><input type="submit" value="注册">&nbsp;<input type="reset" value="重置"></th>
+      </tr>
+    </table>
+  </form>
+  <h3>添加留言</h3>
+  <form>
+    <table width="300">
+      <tr>
+        <th>留言人</th>
+        <th><input type="text" name="man"></th>
+      </tr>
+      <tr>
+        <th>类型</th>
+        <th><select>
+          <option>体育</option>
+          <option>音乐</option>
+          <option selected>街舞</option>
+        </select></th>
+      </tr>
+      <tr>
+        <th>信息</th>
+        <th><textarea rows="3" cols="30"></textarea></th>
+      </tr>
+      <tr>
+        <th><input type="file" name="upload"></th>
+      </tr>
+      <tr>
+        <th><input type="submit" value="提交留言"></th>
+      </tr>
+    </table>
+  </form>
+  <P>
+    <a href="test.html" target="win">link1</a>&nbsp;&nbsp;&nbsp;
+    <a href="test2.html" target="win">link2</a>
+  </P>
+  <p>
+    <!--内部框架在内部显示-->
+    <iframe name="win" width="600" height="400" frameborder="0"></iframe>
+  </p>
+</body>
+</html>
